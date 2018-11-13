@@ -1,0 +1,27 @@
+sequenceDiagram
+participant C as PLATFORM
+participant A as SmartAlogrithm
+participant B as E6
+
+loop 登陆后满足检测抓拍条件
+
+A->>B: 发送抠图结果MESSAGE_SMART_FACE_SIGN_PRO
+A->>C: 发送抠图结果MESSAGE_SMART_FACE_SIGN_PRO
+alt 抠图成功
+    A->>C: 图片数据放入共享缓存
+
+alt 本地认证成功
+A->>B: 本地认证结果MESSAGE_SMART_DYNAMIC_CHECK_RESULT
+else
+alt 本地认证失败&网络连接成功
+C->>A: 发送平台认证结果MESSAGE_PLATFORM_FACE_RECOGNITION
+A->>B: 广播平台认证结果MESSAGE_SMART_DYNAMIC_CHECK_RESULT
+else
+A->>B: 使用离线认证结果MESSAGE_SMART_DYNAMIC_CHECK_RESULT
+end
+
+end
+
+
+end
+end
